@@ -1,0 +1,37 @@
+extends layout.pug
+
+block content
+  h1 Books
+  p
+    a.button(href='/books/new') Create New Book
+  div#suggestions
+    form(action="/search")
+      .input-group
+        input.form-control(autocomplete="off", type='text', name="get", placeholder="Search...")  
+        .input-group-append
+          button#button-addon2.btn.btn-outline-secondary(type='submit') Button
+    div#list
+          
+  table
+      thead
+        tr
+          th Title
+          th Author
+          th Genre
+          th Year
+      tbody
+        each val in data
+          tr
+            td
+              a(href=`/books/${val.id}`) #{val.title}
+            td #{val.author}
+            td #{val.genre}
+            td #{val.year}
+  if count.length > 1
+    .pagination
+      ul
+        each val in count
+          - var add = boolean
+          a(href=add ? `?page=${val}` : `/search?get=${q}&page=${val}` )
+            li= `${val}`
+      
