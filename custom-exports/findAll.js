@@ -6,8 +6,10 @@ const { Book } = db.models;
  * if success else error if fail
  * @param {*} req will take req object
  * @param {*} res will take res object
- * @param {*} boolean true of false will be send to all_books templet to determen 
- * which how the pagination herfs shoud be set up
+ * @param {*} urlPath should take a string of url path 
+ *            which will added to the pagination hyperlink 
+ *            eg "/search?get=game&page="
+ *            Note:- "&page=" should be the last query
  * @param {*} whereCon should take in a object if sequelize conditions 
  */
 

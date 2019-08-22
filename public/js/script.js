@@ -1,4 +1,5 @@
 const searchInput = document.querySelector('.form-control');
+const searchButton = document.querySelector('.input-group-append button'); 
 const searchlist = document.querySelector('#list'); 
 const adSearchLayer = document.querySelector('#ad-search-layer');
 const adSearchButton = document.querySelector('#ad-search-button'); 
@@ -9,6 +10,7 @@ let inputValues;
 
 
 
+//search title
 searchInput.addEventListener('keyup',async (e)=>{
     if(e.target.value === ""){
 
@@ -16,21 +18,25 @@ searchInput.addEventListener('keyup',async (e)=>{
         searchlist.style.display = 'none';
 
     }else if(e.target.value.match(/^[A-Za-z0-9_]+/)){
-        const data = await fetch(`/search?title=${e.target.value.toLowerCase()}`)
+
+        const data = await fetch(`/live-search?title=${e.target.value.toLowerCase()}`)
         .then(res => res.json());
         let list;
+
+        //ternary operator
         data.length === 0?
         list = [`<li>Sorry book not found</li>`]:
         list = data.map(val => 
         `<li><a href="/books/${val.id}">${val.title}</a></li><hr>`);
+        
         searchlist.style.display = '';
         searchlist.innerHTML = `<ul>${list.join('')}</ul>`;
+
     }
 })
 
-adSearchButton.addEventListener('click', (e)=>{
-    adSearchLayer.style.display = '';
-})
+//show Advanced Search
+adSearchButton.addEventListener('click', ()=>{adSearchLayer.style.display = '';})
 
 adSearchLayer.addEventListener('keyup', (e) => {
     adSearchInputs = document.querySelectorAll('#ad-search-form input');
@@ -64,7 +70,7 @@ adSearchLayer.addEventListener('keyup', (e) => {
     }
     
     if(e.target.tageName = 'INPUT'){
-        fetch(`/ad-search${query}`)
+        fetch(`/get-count${query}`)
         .then(res => res.json())
         .then(data => {
             console.log(data)
@@ -74,26 +80,25 @@ adSearchLayer.addEventListener('keyup', (e) => {
     }
 });
 
+
 document.querySelector('#ad-search-close')
 .addEventListener('click', ()=>{
     adSearchLayer.style.display = 'none';
     adSearchInputs = document.querySelectorAll('#ad-search-form input');
 
+    //reset inputs
     adSearchInputs.forEach(input => {
         input.value = "";
     });
 
 })
 
-document.querySelector('.input-group-append button')
-.addEventListener('click',(e)=>{
-    if(searchInput.value === "") e.preventDefault();
-})
+searchButton.addEventListener('click',(e)=> {if(searchInput.value === "")e.preventDefault()});
 
-document.querySelector('#ad-search-form button')
-.addEventListener('click',(e)=>{
-    e.preventDefault();
-    if(numFound >= 1){
-        window.open(`${window.location.origin}/ad-search/show${query}`,'_self');
-    }
-})
+// document.querySelector('#ad-search-form button')
+// .addEventListener('click',(e)=>{
+//     e.preventDefault();
+//     if(numFound >= 1){
+//         window.open(`${window.location.origin}/ad-search/show${query}`,'_self');
+//     }
+// })

@@ -1,5 +1,26 @@
 extends layout.pug
 
+block adSearch      
+  div#ad-search-layer(style="display: none;")
+    div#ad-search-form
+      span#ad-search-close X
+      h1 Advanced Search
+      form(action="/search" method="get" autocomplete="off")
+          p
+          label(for='title') Title :
+          input(name='title' type='text' placeholder="eg Game of Thrones")
+          p
+          label(for='author') Author :
+          input(name='author' type='text' placeholder="eg George R. R. Martin")
+          p 
+          label(for='genre') Genre :
+          input(name='genre' type='text' placeholder="eg Fantasy")
+          p
+          label(for='year') Year :
+          input(name='year' type='text' placeholder="eg 1993")
+          span#total-found Match's Found : 0
+          button.btn.btn-success(type='submit') Search
+
 block content      
   h1 Books
   p
@@ -12,26 +33,29 @@ block content
         .input-group-append
           button#button-addon2.btn.btn-success(type='submit') Search
     div#list(style="display: none;")
-          
-  table
-      thead
-        tr
-          th Title
-          th Author
-          th Genre
-          th Year
-      tbody
-        each val in data
+  if data.length >= 1   
+    table
+        thead
           tr
-            td
-              a(href=`/books/${val.id}`) #{val.title}
-            td #{val.author}
-            td #{val.genre}
-            td #{val.year}
-  if count.length > 1
+            th Title
+            th Author
+            th Genre
+            th Year
+        tbody
+          each val in data
+            tr
+              td
+                a(href=`/books/${val.id}`) #{val.title}
+              td #{val.author}
+              td #{val.genre}
+              td #{val.year}
+    if count.length > 1
     .pagination
       ul
         each val in count
           a(href=`${path}${val}` : `${path}${val}` )
             li= `${val}`
-      
+  else
+    h1 sorry didnt find what you were looking for
+block script      
+  script(type='text/javascript', src="../static/js/script.js")
