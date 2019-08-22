@@ -51,11 +51,11 @@ block content
               td #{val.genre}
               td #{val.year}
     if count.length > 1
-    .pagination
-      ul
-        each val in count
-          a(href=`${path}${val}` : `${path}${val}` )
-            li= `${val}`
+      .pagination
+        ul
+          each val in count
+            a(href=`${path}${val}` : `${path}${val}` )
+              li= `${val}`
   else
     h3#no-results The book you were looking for doesn't seem to be in the collection
     p Try searching for something else or add it by clicking
