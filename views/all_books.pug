@@ -1,16 +1,17 @@
 extends layout.pug
 
-block content
+block content      
   h1 Books
   p
     a.button(href='/books/new') Create New Book
   div#suggestions
+    button#ad-search-button(type='button') Advanced Search
     form(action="/search")
       .input-group
-        input.form-control(autocomplete="off", type='text', name="get", placeholder="Search...")  
+        input.form-control(autocomplete="off", type='text', name="get", placeholder="Search book titles...")  
         .input-group-append
-          button#button-addon2.btn.btn-outline-secondary(type='submit') Button
-    div#list
+          button#button-addon2.btn.btn-success(type='submit') Search
+    div#list(style="display: none;")
           
   table
       thead
@@ -31,7 +32,6 @@ block content
     .pagination
       ul
         each val in count
-          - var add = boolean
-          a(href=add ? `?page=${val}` : `/search?get=${q}&page=${val}` )
+          a(href=`${path}${val}` : `${path}${val}` )
             li= `${val}`
       

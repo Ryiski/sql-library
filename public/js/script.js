@@ -1,18 +1,23 @@
 const searchInput = document.querySelector('.form-control');
 const searchlist = document.querySelector('#list'); 
-searchlist.style.display = 'none';
+const adSearchLayer = document.querySelector('#ad-search-layer');
+const adSearchButton = document.querySelector('#ad-search-button'); 
+let adSearchInputs;
+let query;
+let numFound;
+let inputValues;
+
+
 
 searchInput.addEventListener('keyup',async (e)=>{
-    console.log(e.target.value === "");
     if(e.target.value === ""){
 
         searchlist.innerHTML = "";
         searchlist.style.display = 'none';
 
     }else if(e.target.value.match(/^[A-Za-z0-9_]+/)){
-        const data = await fetch(`/search?q=${e.target.value.toLowerCase()}`)
+        const data = await fetch(`/search?title=${e.target.value.toLowerCase()}`)
         .then(res => res.json());
-        console.log(data)
         let list;
         data.length === 0?
         list = [`<li>Sorry book not found</li>`]:
@@ -21,6 +26,74 @@ searchInput.addEventListener('keyup',async (e)=>{
         searchlist.style.display = '';
         searchlist.innerHTML = `<ul>${list.join('')}</ul>`;
     }
-    
 })
 
+adSearchButton.addEventListener('click', (e)=>{
+    adSearchLayer.style.display = '';
+})
+
+adSearchLayer.addEventListener('keyup', (e) => {
+    adSearchInputs = document.querySelectorAll('#ad-search-form input');
+    
+    inputValues = []
+
+    adSearchInputs.forEach(input => {
+        inputValues.push(input.value);
+    });
+
+    const querys = {
+        title:inputValues[0],
+        author:inputValues[1],
+        genre:inputValues[2],
+        year:inputValues[3],
+    }
+    
+    const boolean = inputValues.every(val => val === "")
+    if(boolean){
+        numFound = 0;
+    }
+    
+    query = '?';
+    
+    for(let key in querys){
+        if(querys[key] !== ""){
+            query += `&${key}=${querys[key]}`;
+        }else{
+            query += `&${key}=`;
+        }
+    }
+    
+    if(e.target.tageName = 'INPUT'){
+        fetch(`/ad-search${query}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            numFound = data;
+            document.querySelector('#total-found').innerHTML = `Match's Found : ${numFound}`;
+        });
+    }
+});
+
+document.querySelector('#ad-search-close')
+.addEventListener('click', ()=>{
+    adSearchLayer.style.display = 'none';
+    adSearchInputs = document.querySelectorAll('#ad-search-form input');
+
+    adSearchInputs.forEach(input => {
+        input.value = "";
+    });
+
+})
+
+document.querySelector('.input-group-append button')
+.addEventListener('click',(e)=>{
+    if(searchInput.value === "") e.preventDefault();
+})
+
+document.querySelector('#ad-search-form button')
+.addEventListener('click',(e)=>{
+    e.preventDefault();
+    if(numFound >= 1){
+        window.open(`${window.location.origin}/ad-search/show${query}`,'_self');
+    }
+})

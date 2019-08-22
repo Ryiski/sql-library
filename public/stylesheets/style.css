@@ -10,9 +10,9 @@ a {
   transition: 0.4s;
 }
 
-  a:hover {
-    color: black;
-  }
+a:hover {
+  color: black;
+}
 
 a.button, input[type=submit] {
   color: white;
@@ -33,9 +33,9 @@ input[type=submit] {
   border: 0;
 }
 
-  a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
-  }
+a.button:hover, input[type=submit]:hover {
+  background-color: #01b189;
+}
 
 p {
   margin: 20px auto;
@@ -130,6 +130,67 @@ input[type=text] {
   position: relative;
 }
 
+#ad-search-layer{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  background-color: #60636275
+}
+
+#ad-search-form{
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  background: white;
+  border: thin solid gray;
+  border-radius: 10px;
+  height: 560px;
+  padding: 20px 30px;
+  margin: auto;
+  z-index: 4;
+}
+
+#total-found{
+  display: block;
+  margin: 10px 0;
+  color: #a0b1ad;
+  font-size: .9rem;
+  font-family: normal
+}
+
+#ad-search-form label{
+  font-weight: normal;
+}
+
+#ad-search-button{
+  width: 100px;
+  height: 2em;
+  font-size: 0.7rem;
+  position: absolute;
+  right: 0;
+  top:-25px
+}
+
+#ad-search-close{
+  color: black !important;
+  background-color: red;
+  width: 15px;
+  text-align: center;
+  cursor: pointer;
+  padding: 2.5px;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  margin: 10px 0;
+  font-size: .9rem;
+  font-family: normal
+}
 
 
 #suggestions{

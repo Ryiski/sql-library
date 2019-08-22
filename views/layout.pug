@@ -5,7 +5,25 @@ html
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
     link(href='../static/stylesheets/style.css' rel='stylesheet')
   body
+    div#ad-search-layer(style="display: none;")
+      div#ad-search-form
+        span#ad-search-close X
+        h1 Advanced Search
+        form(action="/ad-search/show" method="get" autocomplete="off")
+          p
+            label(for='title') Title :
+            input(name='title' type='text' placeholder="eg Game of Thrones")
+          p
+            label(for='author') Author :
+            input(name='author' type='text' placeholder="eg George R. R. Martin")
+          p
+            label(for='genre') Genre :
+            input(name='genre' type='text' placeholder="eg Fantasy")
+          p
+            label(for='year') Year :
+            input(name='year' type='text' placeholder="eg 1993")
+          span#total-found Match's Found : 0
+          button.btn.btn-success(type='submit') Search
     .container
       block content
-    script(type='text/javascript', src="/reload/reload.js")
     script(type='text/javascript', src="../static/js/script.js")
