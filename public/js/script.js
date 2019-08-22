@@ -6,8 +6,8 @@ const adSearchButton = document.querySelector('#ad-search-button');
 let adSearchInputs;
 let query;
 let numFound;
-let inputValues;
-
+let valid = 0;
+let inputValues = ["", "", "", ""];
 
 
 //search title
@@ -41,7 +41,7 @@ adSearchButton.addEventListener('click', ()=>{adSearchLayer.style.display = '';}
 adSearchLayer.addEventListener('keyup', (e) => {
     adSearchInputs = document.querySelectorAll('#ad-search-form input');
     
-    inputValues = []
+    inputValues = [];
 
     adSearchInputs.forEach(input => {
         inputValues.push(input.value);
@@ -52,11 +52,6 @@ adSearchLayer.addEventListener('keyup', (e) => {
         author:inputValues[1],
         genre:inputValues[2],
         year:inputValues[3],
-    }
-    
-    const boolean = inputValues.every(val => val === "")
-    if(boolean){
-        numFound = 0;
     }
     
     query = '?';
@@ -73,8 +68,19 @@ adSearchLayer.addEventListener('keyup', (e) => {
         fetch(`/get-count${query}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
-            numFound = data;
+            
+            for(let i = 0; i < inputValues.length; i++){
+                if(inputValues[i].trim() !== ""){
+                     valid +=1  
+                }else{
+                     valid -= 0
+                }
+            }
+
+            valid > 0?
+            numFound = data:
+            numFound = 0;
+
             document.querySelector('#total-found').innerHTML = `Match's Found : ${numFound}`;
         });
     }
@@ -91,14 +97,11 @@ document.querySelector('#ad-search-close')
         input.value = "";
     });
 
-})
+});
 
 searchButton.addEventListener('click',(e)=> {if(searchInput.value === "")e.preventDefault()});
 
-// document.querySelector('#ad-search-form button')
-// .addEventListener('click',(e)=>{
-//     e.preventDefault();
-//     if(numFound >= 1){
-//         window.open(`${window.location.origin}/ad-search/show${query}`,'_self');
-//     }
-// })
+document.querySelector('#ad-search-form button')
+.addEventListener('click',(e)=>{
+    if(valid === 0) e.preventDefault();   
+});

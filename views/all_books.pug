@@ -22,7 +22,8 @@ block adSearch
           button.btn.btn-success(type='submit') Search
 
 block content      
-  h1 Books
+  h1 
+    a(href="/") Books
   p
     a.button(href='/books/new') Create New Book
   div#suggestions
@@ -56,6 +57,9 @@ block content
           a(href=`${path}${val}` : `${path}${val}` )
             li= `${val}`
   else
-    h1 sorry didnt find what you were looking for
+    h3#no-results The book you were looking for doesn't seem to be in the collection
+    p Try searching for something else or add it by clicking
+      strong 
+        a(href="/books/new") "HERE".
 block script      
   script(type='text/javascript', src="../static/js/script.js")

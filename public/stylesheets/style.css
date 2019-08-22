@@ -220,6 +220,21 @@ input[type=text] {
   font-weight: normal
 }
 
+#no-results{
+  margin-top: 100px;
+  text-align: center
+}
+
+#no-results + p{
+  text-align: center
+}
+
+h1 a{
+  all: unset;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
 hr{
   margin: 10px 0;
 }
