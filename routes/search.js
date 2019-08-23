@@ -12,26 +12,29 @@ router.get('/search',async (req,res) => {
 
   if(get){
     //Title Search
-    findAll(req,res,`/search?get=${get}&page=`,{
+    findAll(req,res,`/search?get=${get.trim()}&page=`,{
       title: {
-        [Op.like]: `%${get}%`
+        [Op.like]: `%${get.trim()}%`
       }
     });
   }else{
     //Advanced Search
-    const path = `/search?title=${title}&author=${author}&genre=${genre}&year=${year}&page=`;
+    const path = `/search?title=${title.trim()}&author=${author.trim()}&genre=${genre.trim()}&year=${year.trim()}&page=`;
+    
+    console.log(`Output => : path`, path);
+    
     findAll(req,res,path,{
         title: {
-        [Op.like]: `%${title}%`
+        [Op.like]: `%${title.trim()}%`
         },
         author: {
-        [Op.like]: `%${author}%`
+        [Op.like]: `%${author.trim()}%`
         },
         genre: {
-        [Op.like]: `%${genre}%`
+        [Op.like]: `%${genre.trim()}%`
         },
         year: {
-        [Op.like]: `%${year}%`
+        [Op.like]: `%${year.trim()}%`
         }
     });
   }
@@ -44,7 +47,7 @@ router.get('/live-search',async (req,res) => {
       attributes: ['title','id'],
       where: {
         title: {
-          [Op.like]: `%${title}%`
+          [Op.like]: `%${title.trim()}%`
         }
       },limit: 3
     });
@@ -62,16 +65,16 @@ router.get('/get-count',async (req,res) => {
 
     await Book.count({where:{
         title: {
-            [Op.like]: `%${title}%`
+            [Op.like]: `%${title.trim()}%`
         },
         author: {
-            [Op.like]: `%${author}%`
+            [Op.like]: `%${author.trim()}%`
         },
         genre: {
-            [Op.like]: `%${genre}%`
+            [Op.like]: `%${genre.trim()}%`
         },
         year: {
-            [Op.like]: `%${year}%`
+            [Op.like]: `%${year.trim()}%`
         }
     }}).then(c => res.json(c))
 });

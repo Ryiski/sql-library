@@ -21,11 +21,11 @@ const findAll = async (req,res, urlPath = '?page=', whereCon) => {
     page = 0: 
     page = req.query.page - 1;
   
-    const limit = 10
-    const offset = page * limit
+    const limit = 10;
+    const offset = page * limit;
   
     
-    const paganation = Book.count({where:whereCon}).then(c => c)
+    const paganation = Book.count({where:whereCon}).then(c => c);
     const books = Book.findAll({
       where:whereCon,
       offset, 
@@ -40,11 +40,11 @@ const findAll = async (req,res, urlPath = '?page=', whereCon) => {
           path: urlPath
         };
         for(var i = 1;i<=Math.ceil(results[0]/ limit); i++)
-        res.locals.count.push(i)
+        res.locals.count.push(i);
       });
-    res.render('all_books')
+    res.render('all_books');
   }catch(err){
-    res.render('error')
+    res.render('error');
     console.log('something went worng ' + err);
   }
 }

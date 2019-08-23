@@ -55,7 +55,7 @@ adSearchLayer.addEventListener('keyup', (e) => {
     query = '?';
     
     for(let key in querys){
-        if(querys[key] !== ""){
+        if(querys[key].trim() !== ""){
             query += `&${key}=${querys[key].trim()}`;
         }else{
             query += `&${key}=`;
