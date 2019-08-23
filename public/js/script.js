@@ -3,11 +3,10 @@ const searchButton = document.querySelector('.input-group-append button');
 const searchlist = document.querySelector('#list'); 
 const adSearchLayer = document.querySelector('#ad-search-layer');
 const adSearchButton = document.querySelector('#ad-search-button'); 
-let adSearchInputs;
-let query;
-let numFound;
-let valid = 0;
-let inputValues = ["", "", "", ""];
+let hasValue; //document with classname of has-value
+let adSearchInputs; //advanced Search inputs
+let query; //url query
+let inputValues = ["", "", "", ""];//advanced search values
 
 
 //search title
@@ -39,14 +38,13 @@ searchInput.addEventListener('keyup',async (e)=>{
 adSearchButton.addEventListener('click', ()=>{adSearchLayer.style.display = '';})
 
 adSearchLayer.addEventListener('keyup', (e) => {
+    let numFound; //number of found books
     adSearchInputs = document.querySelectorAll('#ad-search-form input');
-    
     inputValues = [];
-
     adSearchInputs.forEach(input => {
         inputValues.push(input.value);
     });
-
+    
     const querys = {
         title:inputValues[0],
         author:inputValues[1],
@@ -58,26 +56,24 @@ adSearchLayer.addEventListener('keyup', (e) => {
     
     for(let key in querys){
         if(querys[key] !== ""){
-            query += `&${key}=${querys[key]}`;
+            query += `&${key}=${querys[key].trim()}`;
         }else{
             query += `&${key}=`;
         }
     }
     
     if(e.target.tageName = 'INPUT'){
+
+        e.target.value.trim() != ""?
+        e.target.className = "has-value": 
+        e.target.className = "";   
+
         fetch(`/get-count${query}`)
         .then(res => res.json())
         .then(data => {
-            
-            for(let i = 0; i < inputValues.length; i++){
-                if(inputValues[i].trim() !== ""){
-                     valid +=1  
-                }else{
-                     valid -= 0
-                }
-            }
+            hasValue = document.querySelectorAll('.has-value');
 
-            valid > 0?
+            hasValue.length > 0?
             numFound = data:
             numFound = 0;
 
@@ -86,6 +82,7 @@ adSearchLayer.addEventListener('keyup', (e) => {
     }
 });
 
+searchButton.addEventListener('click',(e)=> {if(searchInput.value === "")e.preventDefault()});
 
 document.querySelector('#ad-search-close')
 .addEventListener('click', ()=>{
@@ -99,9 +96,7 @@ document.querySelector('#ad-search-close')
 
 });
 
-searchButton.addEventListener('click',(e)=> {if(searchInput.value === "")e.preventDefault()});
-
 document.querySelector('#ad-search-form button')
 .addEventListener('click',(e)=>{
-    if(valid === 0) e.preventDefault();   
+    if(hasValue === undefined || hasValue.length === 0) e.preventDefault();   
 });

@@ -28,11 +28,10 @@ router.get('/books/:id', async (req, res, next) => {
 })
 
 router.put('/books/:id', async (req, res) => {
+  const { title, author, genre, year } = req.body;
+
   try {
-
-    const { title, author, genre, year } = req.body;
-
-    Book.update({
+    await Book.update({
       title: title,
       author: author,
       genre: genre,
@@ -45,11 +44,10 @@ router.put('/books/:id', async (req, res) => {
     res.redirect(`/`);
 
   }catch(err){
-
-    res.locals.data = err.errors;
-    res.locals.value = { title, author ,genre ,year };
-    res.render('form-error');
-
+    res.locals.err = err.errors;
+    res.locals.data = { title, author ,genre ,year };
+    res.render(`book_detail`);
+    
   }
 });
 
@@ -70,10 +68,9 @@ router.post('/books/new',  async (req, res) => {
 
   }catch(err){
 
-    res.locals.data = err.errors;
+    res.locals.err = err.errors;
     res.locals.value = { title, author ,genre ,year };
-    res.render('form-error');
-
+    res.render('new_book')
   }
 });
 
