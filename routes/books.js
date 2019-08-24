@@ -29,6 +29,7 @@ router.get('/books/:id', async (req, res, next) => {
 
 router.put('/books/:id', async (req, res) => {
   const { title, author, genre, year } = req.body;
+  const { id } = req.params;
 
   try {
     await Book.update({
@@ -38,14 +39,14 @@ router.put('/books/:id', async (req, res) => {
       year: year
     },
     { 
-      where : { id : req.params.id }
+      where : { id : id }
     }
     );
     res.redirect(`/`);
 
   }catch(err){
     res.locals.err = err.errors;
-    res.locals.data = { title, author ,genre ,year };
+    res.locals.data = { title ,author ,genre ,year ,id };
     res.render(`book_detail`);
     
   }
@@ -70,13 +71,13 @@ router.post('/books/new',  async (req, res) => {
 
     res.locals.err = err.errors;
     res.locals.value = { title, author ,genre ,year };
-    res.render('new_book')
+    res.render('new_book');
   }
 });
 
-router.post('/books/:id/delete', (req, res) => {
+router.post('/books/:id/delete', async (req, res) => {
 
-  Book.destroy({
+  await Book.destroy({
     where: {
         id: `${req.params.id}`
     }
